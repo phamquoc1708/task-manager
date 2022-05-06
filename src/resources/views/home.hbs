@@ -1,0 +1,58 @@
+
+{{#if isLogin}}
+<div class="container">
+    <form class="task-form" method="post" action="/home">
+        <h4>task manager</h4>
+        <div class="form-control">
+            <input type="text" name="name" class="task-input" placeholder="Task" required />
+            <div style="display: flex; justify-content: space-between">
+                <input type="time" name="time" class="task-input" placeholder="Time" style="margin-top: .375rem; width: 49%"
+                    required />
+                <input type="date" id="date" name="date" class="task-input" placeholder="Date" style="margin-top: .375rem; width: 49%"
+                    required />
+            </div>
+            <div style="display:flex; justify-content: flex-end; margin-top: .375rem ">
+                <button type="submit" class="btn submit-btn">submit</button>
+            </div>
+        </div>
+        <div class="form-alert"></div>
+    </form>
+</div>
+{{else}}
+<div class="container">
+    <form class="task-form" method="post" action="/home">
+        <h4>task manager</h4>
+        <i style="text-align: center; display: block">Please, <a href="/users/login">login here to use the task manager</a> or <a href="/users/register">register here</a></i>
+        <div class="form-alert"></div>
+    </form>
+</div>
+
+
+{{/if}}
+<form method="post" id="task-delete-form" style="display: none"></form>
+
+<script>
+    var btn_task_delete = $('.tasks-delete');
+    var form_task_delete = $('#task-delete-form');
+    var input_date = $('input[name=date]');
+    input_date.val(new Date());
+    btn_task_delete.click(function () {
+        var id = this.getAttribute('data-id');
+        form_task_delete.prop('action', `/home/${id}?_method=DELETE`);
+        form_task_delete.submit();
+    })
+
+    // get today assign to form date
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = padTo2Digits(date.getMonth() + 1);
+    const day = padTo2Digits(date.getDate());
+    const withHyphens = [year, month, day].join('-');
+    console.log(withHyphens);
+    document.getElementById("date").value = withHyphens;
+    
+    function padTo2Digits(num) {
+        return num.toString().padStart(2, '0'); 
+    }
+
+</script>

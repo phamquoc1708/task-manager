@@ -1,0 +1,102 @@
+
+{{#if isLogin}}
+<div class="container">
+    <section class="tasks-container">
+        <div class="tasks">
+            <div class="single-task" style="padding: 10px 2rem; text-align: center;">
+                <h5 style="width: 40%; word-wrap: break-word; margin-bottom: 0">Filter by date</h5>
+                <form method="post" id="filter-date" action="" style="width: 28%; border:none; padding: 0; box-shadow: no;">
+                    <input type="date" name="date" id="date" class="task-input" placeholder="Date"
+                        style="margin-top: .375rem; width: 100%; margin-top: 0" required />
+                </form>
+                    <div style="display:flex; justify-content: flex-end; width: 132px ">
+                        <button type="submit" class="btn submit-btn" id="btn-filter">submit</button>
+                    </div>
+
+                <div class="task-links">
+                </div>
+            </div>
+            <div class="single-task" style="background-color:var(--primary-500); color: #fff">
+                <h5 style="width: 40%; word-wrap: break-word; margin-bottom: 0">Name</h5>
+                <h6 style="marin-bottom: 0; word-wrap: break-word; flex: 1; text-align: center;margin-bottom: 0"><span><i
+                            class="far fa-check-circle"></i></span>Time</h6>
+                <a href="/home/personal" style="color:#fff">
+                    <i class="fa-solid fa-circle-left" style="font-size: 1.3rem"></i>
+                </a>
+
+                <div class="task-links">
+                </div>
+            </div>
+            {{#each task}}
+            <div class="single-task">
+                {{{isComplete this.complete this.name}}}
+                <div>
+                    <h7 style="max-width: 40% ;marin-bottom: 0; word-wrap: break-word;"><span><i
+                                class="far fa-check-circle"></i></span>{{this.date}}</h7>
+                    <h7 style="max-width: 40% ;marin-bottom: 0; word-wrap: break-word;"><span><i
+                                class="far fa-check-circle"></i></span>{{this.time}}</h7>
+                </div>
+                <div class="task-links">
+                    <!-- edit link -->
+                    <a href="/edit/{{this._id}}" class="edit-link">
+                        <i class="fas fa-edit" style="color: var(--green-dark); font-size: 18px;"></i>
+                    </a>
+                    <!-- delete btn -->
+                    <button class="edit-link tasks-delete" data-id="{{this._id}}">
+                        <i class="fa-solid fa-trash-can" style="color: var(--red-dark); font-size: 18px;"></i>
+                    </button>
+                </div>
+            </div>
+            {{else}}
+            <h5 class="empty-list">No tasks in your list</h5>
+            {{/each}}
+            <div>
+                <a href="/trash" class="btn submit-btn" style="float: right;">Recycle Bin</a>
+            </div>
+        </div>
+    </section>
+</div>
+{{else}}
+<div class="container">
+    <form class="task-form" method="post" action="/home">
+        <h4>task manager</h4>
+        <i style="text-align: center; display: block">Please, <a href="/users/login">login here to use the task
+                manager</a> or <a href="/users/register">register here</a></i>
+        <div class="form-alert"></div>
+    </form>
+</div>
+
+{{/if}}
+{{!-- Form hidden to delete --}}
+<form method="post" id="task-delete-form" style="display: none"></form>
+<script>
+    var btn_task_delete = $('.tasks-delete');
+    var btn_filter = $('#btn-filter');
+    var form_task_delete = $('#task-delete-form');
+    var filter_date = $('#filter-date');
+
+    btn_task_delete.click(function () {
+        var id = this.getAttribute('data-id');
+        console.log(id)
+        form_task_delete.prop('action', `/home/${id}?_method=DELETE`);
+        form_task_delete.submit();
+    })
+
+    btn_filter.click(function () {
+        filter_date.prop('action', `/home/personal/filter-date`);
+        filter_date.submit();
+    })
+
+    // get today assign to form date
+    var date = new Date();
+    const year = date.getFullYear();
+    const month = padTo2Digits(date.getMonth() + 1);
+    const day = padTo2Digits(date.getDate());
+    const withHyphens = [year, month, day].join('-');
+    console.log(withHyphens);
+    document.getElementById("date").value = withHyphens;
+    
+    function padTo2Digits(num) {
+        return num.toString().padStart(2, '0'); 
+    }
+</script>

@@ -1,0 +1,26 @@
+<div class="page" style="height: 90vh">
+    <div class="form" >
+        <div class="form-panel one" style="height: 80vh; padding: 0 45px;">
+            <div class="form-header">
+                <h1 style="margin-top: 20px">Account Login</h1>
+            </div>
+            <h5 style="color: red; text-align: center; margin: 0">{{msg}}</h5>
+            <div class="form-content">
+                <form action="login" method="post" name="login" style="box-shadow: none">
+                    <div class="form-group">
+                        <label for="email">Username</label><input type="email" id="email" name="email"
+                            required="required" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label><input type="password" id="password" name="password"
+                            required="required" />
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Log In</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="form-panel two"></div>
+    </div>
+</div>

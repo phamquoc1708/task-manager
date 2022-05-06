@@ -1,0 +1,47 @@
+
+{{#if isLogin}}
+<div class="container">
+    <form class="single-task-form" method="post" action="/edit/{{task._id}}?_method=PUT" style="margin-top: 3rem">
+        <h4>Edit Task</h4>
+        <div class="form-control">
+            <label>Task Name :</label>
+            <label class="task-edit-id">{{task.name}}</label>
+            <label>Task Time :</label>
+            <label class="task-edit-id">{{task.date}}  |  {{task.time}}</label>
+        </div>
+        <div class="form-control">
+            <label for="name">New Task Name</label>
+            <input type="text" name="name" class="task-edit-name" value="{{task.name}}"/>
+        </div>
+        <div class="form-control">
+            <label for="">New Task Time</label>
+            <div>
+                <input type="time" name="time" class="task-input" placeholder="Time" style="margin-top: .375rem; width: 49%" value="{{task.time}}"
+                        required />
+                <input type="date" id="date" name="date" class="task-input" placeholder="Date" style="margin-top: .375rem; width: 49%" value="{{task.date}}"
+                        required />
+            </div>
+        </div>
+        <div class="form-control" style="grid-template-columns: auto auto auto auto auto auto">
+            <label for="completed">Completed</label>
+            <input type="radio" name="complete" class="task-edit-completed" value="completed" style="width: 16px; height:16px; cursor: pointer"/>
+            <label for="completed">Processing</label>
+            <input type="radio" name="complete" class="task-edit-completed" value="processing" style="width: 16px; height:16px; cursor: pointer"/>
+            <label for="completed">Not Completed</label>
+            <input type="radio" name="complete" class="task-edit-completed" value="notCompleted" style="width: 16px; height:16px; cursor: pointer"/>
+        </div>
+        <button type="submit" class="block btn task-edit-btn">edit</button>
+        <div class="form-alert"></div>
+    </form>
+    <a href="/home/personal" class="btn back-link" style="margin-top: 1rem">back to tasks</a>
+</div>
+
+{{else}}
+<div class="container">
+    <form class="task-form" method="post" action="/home">
+        <h4>task manager</h4>
+        <i style="text-align: center; display: block">Please, <a href="/users/login">login here to use the task manager</a> or <a href="/users/register">register here</a></i>
+        <div class="form-alert"></div>
+    </form>
+</div>
+{{/if}}

@@ -1,0 +1,108 @@
+
+{{#if isLogin}}
+<form class="task-form" method="post" action="">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Task</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each tasks}}
+            <tr>
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.date}}</td>
+                <td>{{this.time}}</td>
+                <td>
+                    <button class="btn-restore" data-id="{{this._id}}" style="background-color:#fff; border: none;">
+                        <i class="fa-solid fa-reply" style="color: var(--green-dark); font-size: 18px;"></i>
+                    </button>
+                    <button type="button" class="delete-btn" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        data-bs-id="{{this._id}}">
+                        <i class="fa-solid fa-trash-can" style="color: var(--red-dark); font-size: 18px;"></i>
+                    </button>
+                </td>
+
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="4" style="text-align: center;">
+                    Recycle Bin is empty.
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <div>
+        <a href="/home/personal" class="btn back-link">back to tasks</a>
+    </div>
+</form>
+<div>
+</div>
+
+{{!-- Modal Delete --}}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Do you want to delete this task?
+            </div>
+            <div class="modal-footer">
+                <button style="background-color: #dc3545" type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+                <button id="btn-cofirm" type="button" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{else}}
+<div class="container">
+    <form class="task-form" method="post" action="/home">
+        <h4>task manager</h4>
+        <i style="text-align: center; display: block">Please, <a href="/users/login">login here to use the task manager</a> or <a href="/users/register">register here</a></i>
+        <div class="form-alert"></div>
+    </form>
+</div>
+
+{{/if}}
+
+{{!-- Form hidden --}}
+<form id="form-delete" method="post" style="display: none"></form>
+<form id="form-restore" method="post" style="display: none"></form>
+<script>
+    $(document).ready(function () {
+        var id;
+        var form_delete = document.getElementById('form-delete');
+        var btn_cofirm_delete = document.getElementById('btn-cofirm');
+        var btn_restore = $('.btn-restore')
+        var form_restore = $('#form-restore');
+        // get data from tag input
+        exampleModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            id = button.getAttribute('data-bs-id');
+            console.log(id);
+            form_delete.action = `/trash/${id}?_method=DELETE`;
+        })
+
+        btn_cofirm_delete.onclick = function (event) {
+            form_delete.submit();
+        }
+        // restore
+        btn_restore.click(function (e) {
+            e.preventDefault();
+            let id_restore = this.getAttribute('data-id');
+            form_restore.prop("action", `/trash/${id_restore}?_method=PATCH`);
+            form_restore.submit();
+        })
+    })
+</script>
