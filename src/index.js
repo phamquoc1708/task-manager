@@ -56,10 +56,6 @@ var hbs = exphbs.create({
     }
   }
 });
-// <i class="fa-solid fa-backpack"></i>
-// <i class="fa-solid fa-circle-exclamation"></i>
-// <i class="fa-solid fa-bug"></i>
-// <i class="fa-solid fa-circle-xmark"></i>
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources/views'));
